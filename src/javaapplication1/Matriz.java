@@ -1,38 +1,54 @@
 package javaapplication1;
 
+import java.util.concurrent.ThreadLocalRandom;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-public class Matriz implements Runnable{
-
-   
-
-    @Override
-    public void run() {
-                long[][] a = {{7,8,9},{4,5,6},{7,8,9}};
-                long[][] b = {{7,8,9},{4,5,6},{7,8,9}};
-                long[][] c = new long[3][3]; 
-        
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 3; j++) {
-                for (int k = 0; k < 3; k++) {
-                    c[i][j]+= a[i][k]*b[k][j];
-                    try {
-                        Thread.sleep(c[i][j]);
-                    } catch (InterruptedException ex) {
-                    
-                        ex.getStackTrace();
-                    }
-                    
-                }
-                System.out.print(c[i][j]+ "-");
-                 } 
-           
-        System.out.println("");
-
+public class Matriz {  
+    
+    
+   private long[][] matrizA = new long[3][3];
+   private long[][] matrizB = new long[3][3];
+   private long[][] matrizR; 
+   char a = 'A';
+    
+    
+    public Matriz(){
+       this.matrizA = this._geraMatriz(matrizA);
+       this.matrizB = this._geraMatriz(matrizB);
+       this.matrizR = this.geraMatrizR(matrizA, matrizB);
+    }
+    
+    
+    
+    private long[][] _geraMatriz(long matriz[][]) {
+        System.out.println("Resultado Matriz "+this.a+": ");
+        for (int i = 0; i < matriz.length; i++) {
+            for (int j = 0; j < matriz[i].length; j++) {
+                matriz[i][j] = ThreadLocalRandom.current().nextInt(1, 9);
+                System.out.print(matriz[i][j]+"-");
+            } 
+            System.out.println("");
+            
+            
         }
         
+        this.a++;
+        return matriz;  
+    }
+
+    
+    
+    private long[][] geraMatrizR(long[][] a, long[][] b){
+        long[][] r = new long[3][3];
+        for (int l = 0; l < a.length; l++) {
+            for (int m = 0; m < a[l].length; m++) {
+                for (int i = 0; i < a.length; i++) {
+                    r[l][m] += a[l][i] * b[i][m];
+                }
+                System.out.print(r[l][m]+"-");
+            }
+            System.out.println("");
+        }
+        return r;  
     }
     
 }
