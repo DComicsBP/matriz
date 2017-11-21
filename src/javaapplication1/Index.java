@@ -7,7 +7,7 @@ public class Index {
     static long [][] matrizA = new long[3][3];
     static long [][] matrizB = new long[3][3];
     static long [][] result = new long[3][3];
-    static char letra = 'A';
+    static char letra = 'A'; //Não enche com isso!!!!!!
     
     
     static long[][] geraMatriz(long matriz[][]) {
@@ -27,9 +27,8 @@ public class Index {
     public static void main(String[] args) {
         matrizA = geraMatriz(matrizA);
         matrizB = geraMatriz(matrizB);
-
+        
         MultiplicaMatriz mm = new MultiplicaMatriz(3,3);
-
         MatrizRun thread1 = new MatrizRun(mm);
         
         try {
@@ -69,7 +68,6 @@ class MultiplicaMatriz extends Index {
                 for (int i = 0; i < a; i++) {
                     soma += matrizA[l][i] * matrizB[i][m];
                 }
-                System.out.println("Resultado => "+ soma);
                 result[l][m] = soma;
                 soma = 0;
             }
