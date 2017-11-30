@@ -1,74 +1,55 @@
+/****************************
+ * Membros: Rafael, Daione, Paulo Roberto
+ */
+
+
 package javaapplication1;
 
 import java.util.ArrayList;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Index {
+    static Integer [][] matrizA = new Integer[3][3];
+    static Integer [][] matrizB = new Integer[3][3];
+    static Integer [][] matrizResultado = new Integer[3][3];;
     
-    static int [][] matrizA = new int[3][3];
-    static int [][] matrizB = new int[3][3];
-    static int [][] result = new int[3][3];
-    static char letra = 'A'; //Não encrenca com isso!!!!!!
-    
-    
-    static int[][] geraMatriz(int matriz[][]) {
-        System.out.println("Matriz " + letra);
-        for (int[] m : matriz) {
+    static Integer[][] geraMatriz(Integer matriz[][]) {
+        for (Integer[] m : matriz) {
             for (int j = 0; j < m.length; j++) {
-                m[j] = ThreadLocalRandom.current().nextInt(1, 9);
-                System.out.print(m[j] + "-");
+                m[j] = ThreadLocalRandom.current().nextInt(1, 15);
             }
-            System.out.println(""); 
         }
-        letra++;
         return matriz;  
     }
-    
     
     public static void main(String[] args) throws InterruptedException {
         matrizA = geraMatriz(matrizA);
         matrizB = geraMatriz(matrizB);
+        matrizResultado = geraMatriz(matrizResultado);
         ArrayList<Thread> threads = new ArrayList<>();
-
+        
        for (int linha = 0; linha < matrizA.length; linha++) {
             for (int coluna = 0; coluna < matrizB.length; coluna++) {
-                MatrizRun t = new MatrizRun(new MultiplicaMatriz(), linha, coluna);
-                threads.add(new Thread(t));
+                threads.add(new Thread(new MatrizRun(matrizA,matrizB, matrizResultado, linha, coluna)));
             }
         }
        
-        System.out.println("\n");
         for (int i = 0; i < threads.size(); i++) {
-              threads.get(i).start();
-              System.out.println(threads.get(i).getName()+" => "+threads.get(i).getState());
-              
-              
-              threads.get(i).join();
-              System.out.println(threads.get(i).getName()+" => "+threads.get(i).getState());
+              threads.get(i).start(); 
         }
         
+        try {
+            for (int i = 0; i < threads.size(); i++) {
+              threads.get(i).join();
+            }
+        } catch (InterruptedException ex) { }
        
-        System.out.println("\n\nResultado");
-        for (int i = 0; i < result.length; i++) {
-            for (int j = 0; j < result.length; j++) {
-                System.out.print(result[i][j]+"-");
+        System.out.println("Resultado");
+        for (Integer[] matrizResultado1 : matrizResultado) {
+            for (int j = 0; j < matrizResultado.length; j++) {
+                System.out.print(matrizResultado1[j] + "-");
             }
             System.out.println(" ");
         }
-        
-        
-        
-    }
-    
-}
-
-class MultiplicaMatriz extends Index {
-  
-    public void multiplica(int linha, int coluna){
-        int soma = 0;
-        for(int x=0; x < matrizA.length; x++){
-            soma += matrizA[linha][x] * matrizB[x][coluna];
-        }
-        result[linha][coluna] = soma;
     }
 }
